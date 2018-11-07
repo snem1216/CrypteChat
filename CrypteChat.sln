@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ConsoleApp1\ChatServer.csproj", "{4AC86C08-011E-4441-B719-DAC91E6D26EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ChatServer\ChatServer.csproj", "{4AC86C08-011E-4441-B719-DAC91E6D26EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClientUI", "ChatUI\ChatClientUI.csproj", "{E7038582-EB05-4AA9-884D-EBC175340C9A}"
 EndProject

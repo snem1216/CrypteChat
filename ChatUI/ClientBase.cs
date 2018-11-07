@@ -2,62 +2,106 @@
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ChatClient
+namespace ChatUI
 {
+    // Partially sourced from: http://csharp.net-informations.com/communications/csharp-chat-server.htm
     public class ClientBase
     {
         System.Net.Sockets.TcpClient Client = new System.Net.Sockets.TcpClient();
         NetworkStream ServerNetStream;
-        string readData;
-        static string ChatContents = "";
+        Thread ctThread;
+        private string readData;
+        private string fromUser;
+        private string newMessage;
+        private MainWindow ParentChatWindow;
+        private EncryptionHandler encHandler = new EncryptionHandler();
+
         /// <summary>
         /// Sends message to the chat server.
         /// </summary>
         /// <param name="Message">Chat message to be sent.</param>
-        private void SendMessage(string Message)
+        public void SendMessage(string Message)
         {
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(Message + "$");
+            string encryptedMessage = encHandler.Encrypt(Message);
+            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(encryptedMessage + "$");
             ServerNetStream.Write(outStream, 0, outStream.Length);
             ServerNetStream.Flush();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:ChatUI.ClientBase"/> class.
+        /// </summary>
+        /// <param name="parentChatWindow">Parent chat window, used to update chat field.</param>
+        public ClientBase(MainWindow parentChatWindow)
+        {
+            this.ParentChatWindow = parentChatWindow;
+        }
+
+        /// <summary>
+        /// Updates the chat contents on the parent UI screen.
+        /// </summary>
         private void UpdateChat()
         {
-            ChatContents = ChatContents + Environment.NewLine + " >> " + readData;
+            ParentChatWindow.AddChatMessage("<" + fromUser + ">: " + newMessage);
         }
+
 
         private void GetServerMessages()
         {
+            string[] parsedData;
             while (true)
             {
                 ServerNetStream = Client.GetStream();
-                int buffSize = Client.ReceiveBufferSize;
-                byte[] inStream = new byte[buffSize];
-                Console.WriteLine("BuffSize: {0}", buffSize);
-                ServerNetStream.Read(inStream, 0, buffSize);
-                string returndata = System.Text.Encoding.ASCII.GetString(inStream);
+                int bufferSize = Client.ReceiveBufferSize;
+                byte[] inputStream = new byte[bufferSize];
+                ServerNetStream.Read(inputStream, 0, bufferSize);
+                string returndata = System.Text.Encoding.ASCII.GetString(inputStream);
                 readData = "" + returndata;
-                UpdateChat();
+                if(readData.Contains("|"))
+                {
+                    parsedData = readData.Split('|');
+                    Console.WriteLine(parsedData[1].Remove(0, parsedData[1].Length));
+                    //Console.WriteLine("0 " + readData.Split('|')[0]);
+                    //Console.WriteLine("1 " + parsedData[1].Remove(0,parsedData[1].Length));
+                    // Decrypt username and message
+                    fromUser = encHandler.Decrypt(parsedData[0]);
+                    //fromUser = parsedData[0];
+                    //newMessage = encHandler.Decrypt(parsedData[1]);
+                    newMessage = parsedData[1];
+                    UpdateChat();
+                    //ParentChatWindow.AddChatMessage(readData);
+                }
+
+                else
+                {
+                    ParentChatWindow.AddChatMessage(readData);
+                }
             }
         }
 
-        private void ConnectServer(string ServerAddress, string UserName)
+        public void ConnectToServer(string serverAddress, string userName, string password)
         {
-            readData = "Connected to Chat Server ...";
-            UpdateChat();
-            Client.Connect(ServerAddress, 8888);
+            string encryptedUserName;
+            ParentChatWindow.AddChatMessage("Connected to Chat Server ...");
+            encHandler.SetKey(password);
+            //UpdateChat();
+            Client.Connect(serverAddress, 8888);
             ServerNetStream = Client.GetStream();
-
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(UserName + "$");
+            encryptedUserName = encHandler.Encrypt(userName);
+            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(encryptedUserName + "$");
             ServerNetStream.Write(outStream, 0, outStream.Length);
             ServerNetStream.Flush();
 
-            Thread ctThread = new Thread(GetServerMessages);
+            ctThread = new Thread(GetServerMessages);
             ctThread.Start();
         }
 
-
-
-
+        /// <summary>
+        /// Stops the client thread, called on application exit.
+        /// </summary>
+        public void StopClient()
+        {
+            ctThread.Abort();
+        }
     }
 }
