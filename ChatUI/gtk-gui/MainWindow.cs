@@ -96,7 +96,6 @@ public partial class MainWindow
 		this.entryUserName = new global::Gtk.Entry();
 		this.entryUserName.CanFocus = true;
 		this.entryUserName.Name = "entryUserName";
-		this.entryUserName.Text = global::Mono.Unix.Catalog.GetString("user0");
 		this.entryUserName.IsEditable = true;
 		this.entryUserName.InvisibleChar = '●';
 		this.hbox9.Add(this.entryUserName);
@@ -122,7 +121,6 @@ public partial class MainWindow
 		this.entryPassword = new global::Gtk.Entry();
 		this.entryPassword.CanFocus = true;
 		this.entryPassword.Name = "entryPassword";
-		this.entryPassword.Text = global::Mono.Unix.Catalog.GetString("genericpassword");
 		this.entryPassword.IsEditable = true;
 		this.entryPassword.Visibility = false;
 		this.entryPassword.InvisibleChar = '●';
@@ -187,7 +185,6 @@ public partial class MainWindow
 		this.entryMessage = new global::Gtk.Entry();
 		this.entryMessage.CanFocus = true;
 		this.entryMessage.Name = "entryMessage";
-		this.entryMessage.Text = global::Mono.Unix.Catalog.GetString("test");
 		this.entryMessage.IsEditable = true;
 		this.entryMessage.InvisibleChar = '●';
 		this.hbox7.Add(this.entryMessage);

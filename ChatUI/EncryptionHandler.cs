@@ -117,7 +117,23 @@ namespace ChatUI
 
         private static string DecryptStringFromBytes_Aes(string secretMessage, byte[] Key, byte[] IV)
         {
-            Console.WriteLine("Intercepted Message: {0}", secretMessage);
+            //int endOfMessage;
+            /*
+            if(secretMessage.Contains("=="))
+            {
+                endOfMessage = secretMessage.IndexOf('=') + 2;
+            }
+            else
+            {
+                endOfMessage = secretMessage.IndexOf('=') + 1;
+            }
+
+            if(secretMessage.Length > endOfMessage)
+            {
+                secretMessage = secretMessage.Remove(secretMessage.IndexOf('=') + 2);
+            }*/
+
+            //Console.WriteLine("Intercepted Message: {0}", secretMessage);
             byte[] cipherText = Convert.FromBase64String(secretMessage);
 
             if (cipherText == null || cipherText.Length <= 0)

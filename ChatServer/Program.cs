@@ -35,7 +35,8 @@ namespace ChatServer
 
                 clientsList.Add(dataFromClient, clientSocket);
 
-                SendBroadCast(dataFromClient + " joined ", dataFromClient, false);
+                // Join message
+                SendBroadCast("j:" + dataFromClient + "$", dataFromClient, false);
 
                 Console.WriteLine(dataFromClient + " joined chat room ");
                 ClientHandler client = new ClientHandler();
@@ -58,7 +59,7 @@ namespace ChatServer
 
                 if (flag == true)
                 {
-                    broadcastBytes = Encoding.ASCII.GetBytes(userName + "|" + message);
+                    broadcastBytes = Encoding.ASCII.GetBytes(userName + "|" + message + "$");
                 }
                 else
                 {

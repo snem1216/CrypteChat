@@ -64,12 +64,24 @@ namespace ChatUI
                     // Decrypt username and message
                     fromUser = encHandler.Decrypt(parsedData[0]);
                     // Removes extra data after the == in the encrypted message, which causes crashing.
-                    newMessage = encHandler.Decrypt(parsedData[1].Remove(parsedData[1].IndexOf('=') + 2));
+                    //newMessage = encHandler.Decrypt(parsedData[1]);
+                    newMessage = encHandler.Decrypt(parsedData[1].Remove(parsedData[1].IndexOf('$')));
+                    //newMessage = encHandler.Decrypt(parsedData[1].Remove(parsedData[1].IndexOf('=') + 2));
                     //newMessage = parsedData[1].Remove(parsedData[1].IndexOf('=') + 2);
                     UpdateChat();
                     //ParentChatWindow.AddChatMessage(readData);
                 }
-
+                else if(readData.StartsWith("j:"))
+                {
+                    newMessage = readData.Remove(0, 2);
+                    newMessage = newMessage.Remove(newMessage.IndexOf('$'));
+                    newMessage = encHandler.Decrypt(newMessage) + " joined";
+                    //newMessage
+                    //newMessage = newMessage.Remove(newMessage.IndexOf('=') + 2);
+                    ParentChatWindow.AddChatMessage(newMessage);
+                    //UpdateChat();
+                    //newMessage = encHandler.Decrypt(readData.Remove(0, 2).Remove(readData.IndexOf('=') + 2));
+                }
                 else
                 {
                     ParentChatWindow.AddChatMessage(readData);
