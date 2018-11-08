@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using ChatUI;
 using Gtk;
 
@@ -9,6 +10,10 @@ public partial class MainWindow : Gtk.Window
     {
         Build();
         client = new ClientBase(this);
+		/*this.SetIconFromFile(string.Format("{0}{1}Images{2}Logo.png", 
+   System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), 
+   System.IO.Path.DirectorySeparatorChar, 
+   System.IO.Path.DirectorySeparatorChar));*/
     }
 
     public void AddChatMessage(string message)

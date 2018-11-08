@@ -9,7 +9,7 @@
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="867 400">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="Title" translatable="yes">CrypteChat</property>
     <property name="WindowPosition">CenterOnParent</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
@@ -69,7 +69,6 @@
                       <widget class="Gtk.Entry" id="entryUserName">
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
-                        <property name="Text" translatable="yes">user0</property>
                         <property name="IsEditable">True</property>
                         <property name="InvisibleChar">●</property>
                       </widget>
@@ -104,7 +103,6 @@
                       <widget class="Gtk.Entry" id="entryPassword">
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
-                        <property name="Text" translatable="yes">genericpassword</property>
                         <property name="IsEditable">True</property>
                         <property name="Visibility">False</property>
                         <property name="InvisibleChar">●</property>
@@ -196,7 +194,6 @@
                   <widget class="Gtk.Entry" id="entryMessage">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Text" translatable="yes">test</property>
                     <property name="IsEditable">True</property>
                     <property name="InvisibleChar">●</property>
                     <signal name="Activated" handler="messageEnter" />
