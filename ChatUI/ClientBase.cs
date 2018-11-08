@@ -61,13 +61,11 @@ namespace ChatUI
                 {
                     parsedData = readData.Split('|');
                     Console.WriteLine(parsedData[1].Remove(0, parsedData[1].Length));
-                    //Console.WriteLine("0 " + readData.Split('|')[0]);
-                    //Console.WriteLine("1 " + parsedData[1].Remove(0,parsedData[1].Length));
                     // Decrypt username and message
                     fromUser = encHandler.Decrypt(parsedData[0]);
-                    //fromUser = parsedData[0];
-                    //newMessage = encHandler.Decrypt(parsedData[1]);
-                    newMessage = parsedData[1];
+                    // Removes extra data after the == in the encrypted message, which causes crashing.
+                    newMessage = encHandler.Decrypt(parsedData[1].Remove(parsedData[1].IndexOf('=') + 2));
+                    //newMessage = parsedData[1].Remove(parsedData[1].IndexOf('=') + 2);
                     UpdateChat();
                     //ParentChatWindow.AddChatMessage(readData);
                 }
